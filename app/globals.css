@@ -10,6 +10,9 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-mega-bg: #d1e5ff;
+  --color-mega-text: #09083b;
+  --color-deep-blue: #09083b;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +26,48 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+em {
+  font-family: "Instrument", serif;
+  font-style: italic;
+  letter-spacing: 0.1px;
+  line-height: 80px;
+}
+
+
+/* Hero Section images animation */
+
+@keyframes marquee-down {
+  0% { transform: translate3d(0, -50%, 0); }
+  100% { transform: translate3d(0, 0%, 0); }
+}
+
+@keyframes marquee-up {
+  0% { transform: translate3d(0, 0%, 0); }
+  100% { transform: translate3d(0, -50%, 0); }
+}
+
+.animate-marquee-down {
+  animation: marquee-down 60s linear infinite;
+}
+
+.animate-marquee-up {
+  animation: marquee-up 60s linear infinite;
+}
+
+/* Services Section animation */
+
+@keyframes marquee-left-to-right {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0%, 0, 0); }
+}
+
+.animate-marquee-horizontal {
+  animation: marquee-left-to-right 60s linear infinite;
+}
+
+/* Pause on hover */
+.hover-pause:hover .animate-marquee-horizontal {
+  animation-play-state: paused;
 }
