@@ -1,15 +1,13 @@
 import React from "react";
-import Hero from "./_components/sections/home/hero";
-import LogoCloud from "./_components/sections/home/logo-cloud";
-import IntroVideo from "./_components/sections/home/intro-video";
-import Process from "./_components/sections/home/made-to-flex";
-import Stats from "./_components/sections/home/stats";
-import Showcase from "./_components/sections/home/showcase";
-import Comparison from "./_components/sections/home/comparison";
-import Testimonials from "./_components/sections/home/testimonials";
-import FinalCTA from "./_components/sections/home/final-cta";
-import ComparisonTable from "./_components/sections/home/comparison-table";
-import VideoScrollSection from "./_components/sections/home/videoScrollSection";
+import Hero from "@/app/_components/sections/home/hero";
+import LogoCloud from "@/app/_components/sections/home/logo-cloud";
+import IntroVideo from "@/app/_components/sections/home/intro-video";
+import Process from "@/app/_components/sections/home/made-to-flex";
+import Stats from "@/app/_components/sections/home/stats";
+import Showcase from "@/app/_components/sections/home/showcase";
+import Comparison from "@/app/_components/sections/home/comparison";
+import Testimonials from "@/app/_components/sections/home/testimonials";
+import VideoScrollSection from "@/app/_components/sections/home/videoScrollSection";
 import Services from "@/app/_components/sections/home/services";
 
 export default function Home() {
