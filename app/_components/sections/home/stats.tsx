@@ -43,11 +43,11 @@ const StatsSection = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-20">
           {stats.map((stat, idx) => (
             <div
               key={idx}
-              className={`flex flex-col md:flex-row-reverse justify-between items-start gap-8 p-10 md:p-16 border-b border-white/50 ${
+              className={`flex flex-col md:flex-row-reverse justify-between items-start gap-8 py-10 md:py-16 border-b border-white/50 ${
                 idx % 2 === 0 ? "" : ""
               } min-h-[260px]`}
             >

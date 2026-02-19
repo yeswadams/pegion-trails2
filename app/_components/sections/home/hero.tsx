@@ -7,27 +7,25 @@ import HeroImageGrid from "./heroImageGrid";
 
 const Hero = () => {
   return (
-    <section className="bg-[#09083B] text-[#D1E5FF] overflow-hidden h-screen w-full px-4 md:px-10">
+    <section className="bg-[#09083B] text-[#D1E5FF] overflow-hidden pt-28 h-screen w-full px-4 md:px-10 sm:justify-end">
       <div className="max-w-full mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* LEFT CONTENT AREA */}
-        <div className="w-full lg:w-[45%] px-6 py-16 md:px-10 lg:py-0 self-center">
+        <div className="w-full lg:w-[45%] flex flex-col h-full justify-center items-start text-left gap-6">
           <div className="max-w-full">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.1] mb-8">
-              We{" "}
-              <em>
-                Overthink
-              </em>{" "}
-              so that you don't have to.™
+            <h1 className="text-[40px] md:text-6xl lg:text-7xl font-semibold leading-[1.0] mb-8">
+              We <em>Overthink</em> so that you don't have to.™
             </h1>
             <p className="text-lg md:text-xl text-white leading-relaxed mb-10 max-w-full">
-              Behind every simple idea is a lot of thinking. We do that thinking early, thoroughly, and on purpose so your brand can move faster with confidence
+              We help ambitious companies launch memorable brands, build
+              high-impact websites, design digital products people love to
+              use.{" "}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/demo"
                 className="px-8 py-4 text-lg font-bold bg-[#D1E5FF] text-[#09083B] rounded-full hover:scale-105 transition-transform"
               >
-                Book a demo
+                Book a Call
               </Link>
             </div>
           </div>

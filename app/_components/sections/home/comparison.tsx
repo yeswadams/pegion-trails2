@@ -60,7 +60,7 @@ const ComparisonSection = () => {
             </div>
 
             {/* Pegion Trails (The Highlighted Row) */}
-            <div className="bg-[#D1E5FF] text-[#09083B] rounded-full grid grid-cols-[1.5fr_repeat(5,1fr)] gap-4 items-center p-8 px-14 mb-10 shadow-[0_20px_50px_rgba(203,243,130,0.15)] transform hover:scale-[1.01] transition-transform duration-500">
+            <div className="bg-[#D1E5FF] text-[#09083B] rounded-full grid grid-cols-[1.5fr_repeat(5,1fr)] gap-4 items-center p-8 px-14 mb-10 shadow-[0_20px_50px_rgba(203,243,130,0.15)] transform  transition-transform duration-500">
               <div>
                 <h3 className="text-3xl font-bold">Pegion Trails</h3>
                 <p className="text-xs font-semibold opacity-70">

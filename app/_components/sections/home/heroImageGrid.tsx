@@ -28,7 +28,7 @@ const HeroImageGrid = () => {
     containerClass?: string;
   }) => (
     /* The container handles the vertical stagger/misalignment */
-    <div className={`flex-1 h-full overflow-hidden ${containerClass}`}>
+    <div className={`flex-1 h-full overflow-hidden ${containerClass} `}>
       <div
         className={`flex flex-col gap-4 ${
           direction === "down" ? "animate-marquee-down" : "animate-marquee-up"

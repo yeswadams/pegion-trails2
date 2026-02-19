@@ -14,13 +14,13 @@ const CreativeWorkSection = () => {
 
   return (
     <section className="bg-[#F9F9F7] py-24 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 mb-16 text-center md:text-left">
+      <div className="max-w-full mx-auto px-4 md:px-18 mb-16 text-center md:text-left">
         <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#09083B]/60 mb-6">
           Easy & Hassle-Free
         </p>
         <h2 className="text-4xl md:text-6xl font-bold text-[#09083B] leading-tight">
           Every type of creative work you'll <br />
-          ever need, <span className="italic font-normal serif-font">and more</span>
+          ever need, <em>and more</em>
         </h2>
       </div>
 

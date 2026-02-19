@@ -55,13 +55,13 @@ const VideoScrollSection = () => {
               playsInline
               className="w-full h-full object-cover opacity-80"
             >
-              <source src="/videos/hero-showcase.mp4" type="video/mp4" />
+              <source src="https://www.youtube.com/watch?v=U5f3iufE-bI&pp=ygUSY3JlYXRpdmUgc2hvd3JlZWxz" type="video/mp4" />
             </video>
 
             {/* Play Icon Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-white/20 backdrop-blur-md aspect-4/3 px-12 py-6 flex items-center justify-center border border-white/30">
-                <Play className="text-white" size={80} />
+              <div className="bg-white/20 backdrop-blur-md aspect-4/3 rounded-2xl px-4 py-2 md:px-8 md:py-4 flex items-center justify-center border border-white/30">
+                <Play className="text-white" size={40} />
               </div>
             </div>
           </motion.div>

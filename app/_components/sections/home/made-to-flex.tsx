@@ -22,8 +22,8 @@ const MadeToFlex = () => {
   ];
 
   return (
-    <section className="bg-[#09083B] py-30 px-6 md:px-10">
-      <div className="max-w-[1440px] mx-auto">
+    <section className="bg-[#09083B] py-30 px-4 md:px-12">
+      <div className="max-w-full mx-auto">
         <div className="text-center mb-16">
           <p className="text-[16px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-4">
             Made to flex

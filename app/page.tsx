@@ -9,6 +9,8 @@ import Comparison from "@/app/_components/sections/home/comparison";
 import Testimonials from "@/app/_components/sections/home/testimonials";
 import VideoScrollSection from "@/app/_components/sections/home/videoScrollSection";
 import Services from "@/app/_components/sections/home/services";
+import OurDifference from "@/app/_components/sections/home/ourDifference";
+import WorkWithUs from "@/app/_components/sections/home/workWithUs";
 
 export default function Home() {
   return (
@@ -23,6 +25,8 @@ export default function Home() {
       <Comparison />
       <Showcase />
       <Testimonials />
+      <OurDifference />
+      <WorkWithUs />
     </div>
   );
 }

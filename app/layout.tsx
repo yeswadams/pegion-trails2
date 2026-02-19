@@ -27,10 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased justify-between`}
+        className={`${geistSans.variable} ${geistMono.variable}  flex flex-col antialiased justify-between`}
       >
         <Navbar />
-        <main className="flex flex-col">{children}</main>
+        <main className="flex flex-col ">{children}</main>
         <Footer />
       </body>
     </html>
