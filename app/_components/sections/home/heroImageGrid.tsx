@@ -4,18 +4,15 @@ const HeroImageGrid = () => {
   // Array of images - ensuring enough items for a tall enough track
   const images = [
     "/images/hero_img1.avif",
-    "/images/hero_img2.jfif",
-    "/images/hero_img3.jfif",
-    "/images/hero_img4.jfif",
-    "/images/hero_img5.jfif",
-    "/images/hero_img6.jfif",
-    "/images/hero_img7.jfif",
-    "/images/hero_img8.png",
-    "/images/hero_img9.jfif",
-    "/images/hero_img10.jfif",
-    "/images/hero_img11.jfif",
-    "/images/hero_img12.jfif",
-    "/images/hero_img13.jfif",
+    "/images/hero_img1.jpg",
+    "/images/hero_img2.jpg",
+    "/images/hero_img3.jpg",
+    "/images/hero_img4.jpg",
+    "/images/hero_img5.jpg",
+    "/images/hero_img6.jpg",
+    "/images/hero_img7.jpg",
+
+    
   ];
 
   const ScrollingColumn = ({
