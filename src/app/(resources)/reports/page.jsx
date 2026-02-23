@@ -2,7 +2,9 @@ import React from 'react'
 
 const ReportsPage = () => {
   return (
-    <div>ReportsPage</div>
+    <div className='flex flex-col'>
+
+    </div>
   )
 }
 
