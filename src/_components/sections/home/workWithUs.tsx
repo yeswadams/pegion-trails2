@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const WorkWithUs = () => {
   return (
-    <div className="flex flex-col md:flex-row sm:gap-4 md:gap-0 lg:gap-0 h-auto">
+    <div className="flex flex-col md:flex-row sm:gap-4 md:gap-0 lg:gap-0 h-screen">
       <div className="flex flex-col w-full md:w-1/2 bg-[#d1e5ff] text-[#09083B] p-8 md:p-16 lg:p-24 justify-between items-stretch">
         <div className="flex flex-col gap-4">
             <span className="text-[16px] md:text-[18px] font-normal mb-4 border-b-2 border-[#09083B] w-full pb-4 uppercase tracking-[0.2em]">
