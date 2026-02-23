@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Reports = () => {
+const ReportsPage = () => {
   return (
-    <div>Reports</div>
+    <div>ReportsPage</div>
   )
 }
+
+export default ReportsPage
