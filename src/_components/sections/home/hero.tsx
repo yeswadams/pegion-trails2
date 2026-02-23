@@ -7,7 +7,7 @@ import HeroImageGrid from "./heroImageGrid";
 
 const Hero = () => {
   return (
-    <section className="bg-[#09083B] text-[#D1E5FF] overflow-hidden pt-28 h-screen w-full px-4 md:px-10 sm:justify-end">
+    <section className="bg-[#09083B] text-[#D1E5FF] overflow-hidden sm:pt-28 md:pt-0 h-screen w-full px-4 md:px-10 sm:justify-end">
       <div className="max-w-full mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* LEFT CONTENT AREA */}
         <div className="w-full lg:w-[45%] flex flex-col h-full justify-center items-start text-left gap-6">
