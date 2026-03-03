@@ -98,8 +98,12 @@ const learningCenterItems = [
   },
 ];
 
+import { usePathname } from "next/navigation";
+
 // --- MAIN NAVBAR COMPONENT ---
 const Navbar = () => {
+  const pathname = usePathname();
+  const isBlogPage = pathname?.includes("/blog") || pathname?.includes("/resources");
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -133,13 +137,17 @@ const Navbar = () => {
   const navbarClasses = `fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
     isScrolled || hoveredNavItem || isMobileMenuOpen
       ? "bg-[#09083B] shadow-scroll py-3"
-      : "bg-transparent py-5"
+      : isBlogPage 
+        ? "bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm"
+        : "bg-transparent py-5"
   }`;
 
   const linkColorClass =
     isScrolled || hoveredNavItem || isMobileMenuOpen
       ? "text-white"
-      : "text-white"; // Always white for contrast based on image request, adjust if needed for transparent state against light bg.
+      : isBlogPage
+        ? "text-[#09083B]"
+        : "text-white"; 
 
   return (
     <nav
@@ -490,8 +498,8 @@ const MobileServicesContent = ({ closeMenu }: { closeMenu: () => void }) => {
 
   return (
     <div className="space-y-8 pb-4">
-      <div className="space-y-4">
-        <div className="bg-[#CBF382] text-[#09083B] text-xs font-bold px-3 py-1.5 rounded-md inline-flex items-center gap-1">
+      <div className="space w-full">
+        <div className="bg-[#CBF382] text-[#09083B] text-sm px-3 py-1.5 rounded-md inline-flex items-center gap-1">
           Creative design services <ArrowUpRight className="w-3 h-3" />
         </div>
         <div className="grid gap-4 pl-1">
@@ -512,8 +520,8 @@ const MobileServicesContent = ({ closeMenu }: { closeMenu: () => void }) => {
       </div>
 
       <div className="space-y-4">
-        <div className="bg-[#2D6A4F] text-white text-xs font-bold px-3 py-1.5 rounded-md inline-flex items-center gap-1">
-          Specialized production services <ArrowUpRight className="w-3 h-3" />
+        <div className="bg-[#2D6A4F] text-white text-xs font-bold px-3 py-1.5 rounded-md inline-flex items-center gap-1 ">
+          <em className="font-serif text-red-400">Specialized production services</em> <ArrowUpRight className="w-3 h-3" />
         </div>
         <div className="grid gap-4 pl-1">
           {productionServices.map((s, idx) => (
@@ -540,8 +548,8 @@ const MobileServicesContent = ({ closeMenu }: { closeMenu: () => void }) => {
       </div>
 
       <div className="space-y-4">
-        <div className="bg-[#1D4E89] text-white text-xs font-bold px-3 py-1.5 rounded-md inline-flex items-center gap-1">
-          AI services <ArrowUpRight className="w-3 h-3" />
+        <div className="bg-[#1D4E89] text-white font-serif text-xs font-semibold px-3 py-1.5 rounded-md inline-flex items-center gap-1">
+          AI services <ArrowUpRight className="w-4 h-4" />
         </div>
         <div className="grid gap-4 pl-1">
           {aiServices.map((s, idx) => (

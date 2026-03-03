@@ -1,20 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Search,
-  Tag,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Link as LinkIcon,
-  ChevronRight,
-  Send
-} from "lucide-react";
+import { Search, Tag, Facebook, Twitter, Linkedin, Link as LinkIcon, ChevronRight, Send, Image as ImageIcon } from "lucide-react";
 import { PortableText, type SanityDocument } from "next-sanity";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url";
 import { client } from "@/lib/sanity/client";
+import BlogContentWrapper from "@/_components/blog/blog-content-wrapper";
 
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
@@ -22,25 +14,30 @@ const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]{
   title,
   slug,
   publishedAt,
-  image,
+  mainImage,
   body,
   author->{name},
   categories[]->{title}
 }`;
 
 const RECENT_POSTS_QUERY = `*[_type == "post" && defined(slug.current)]
-  | order(publishedAt desc)[0...3]{
+  | order(publishedAt desc)[0...4]{
   _id,
   title,
   slug,
   publishedAt,
-  image
+  mainImage
 }`;
 
 const CATEGORIES_QUERY = `*[_type == "category"]{
   _id,
   title
 }`;
+
+const getImageUrl = (source: any) => {
+  if (!source) return "";
+  return urlFor(source).width(1400).quality(80).url();
+};
 
 const { projectId, dataset } = client.config();
 
@@ -66,11 +63,44 @@ const slugify = (text: string) =>
 
 // PortableText Components for custom styling
 const components = {
+  types: {
+    image: ({ value }: any) => {
+      const imageUrl = urlFor(value)?.url();
+      if (!imageUrl) return null;
+      return (
+        <div className="my-12 relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg group">
+          <Image
+            src={imageUrl}
+            alt={value.alt || "Blog content image"}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {value.caption && (
+            <p className="mt-4 text-center text-sm text-gray-500 italic px-4">
+              {value.caption}
+            </p>
+          )}
+        </div>
+      );
+    },
+  },
+  marks: {
+    link: ({ children, value }: any) => (
+      <a
+        href={value.href}
+        className="text-[#09083b] font-bold border-b-2 border-[#09083b]/20 hover:border-[#09083b] hover:text-blue-700 transition-all duration-300 decoration-none"
+        target={value.blank ? "_blank" : undefined}
+        rel={value.blank ? "noopener noreferrer" : undefined}
+      >
+        {children}
+      </a>
+    ),
+  },
   block: {
     h2: ({ children, value }: any) => {
       const id = slugify(value.children[0].text);
       return (
-        <h2 id={id} className="text-3xl md:text-4xl font-bold text-black mt-16 mb-6 onest scroll-mt-32">
+        <h2 id={id} className="text-3xl md:text-5xl font-bold text-[#09083b] mt-20 mb-10 onest scroll-mt-32 leading-tight">
           {children}
         </h2>
       );
@@ -78,58 +108,58 @@ const components = {
     h3: ({ children, value }: any) => {
       const id = slugify(value.children[0].text);
       return (
-        <h3 id={id} className="text-2xl md:text-3xl font-bold text-black mt-12 mb-4 onest scroll-mt-32">
+        <h3 id={id} className="text-2xl md:text-4xl font-bold text-[#09083b] mt-16 mb-8 onest scroll-mt-32 leading-tight">
           {children}
         </h3>
       );
     },
     h4: ({ children }: any) => (
-      <h4 className="text-xl md:text-2xl font-bold text-black mt-10 mb-4 onest">
+      <h4 className="text-xl md:text-3xl font-bold text-[#09083b] mt-12 mb-6 onest">
         {children}
       </h4>
     ),
-    h5: ({ children }: any) => (
-      <h5 className="text-lg md:text-xl font-bold text-black mt-8 mb-3 onest">
-        {children}
-      </h5>
-    ),
-    h6: ({ children }: any) => (
-      <h6 className="text-base md:text-lg font-bold text-black mt-6 mb-2 onest uppercase tracking-wide">
-        {children}
-      </h6>
-    ),
     normal: ({ children }: any) => (
-      <p className="text-gray-600 text-lg leading-relaxed mb-6 font-medium">
+      <p className="text-gray-700 text-lg md:text-xl leading-[1.8] mb-10 font-[Inter,sans-serif] tracking-tight selection:bg-blue-100">
         {children}
       </p>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-[var(--gold-primary)] pl-8 py-4 my-10 bg-[var(--gold-primary)]/5 rounded-r-2xl italic text-xl text-black font-medium leading-relaxed">
+      <blockquote className="border-l-12 border-[#09083b] pl-12 py-10 my-16 bg-[#09083b]/5 rounded-r-[40px] italic text-2xl md:text-4xl text-[#09083b] font-medium leading-relaxed shadow-inner">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-none space-y-4 mb-8 pl-4">
+      <ul className="list-none space-y-8 mb-12 pl-4">
         {children}
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal space-y-4 mb-8 pl-8 text-black font-semibold">
+      <ol className="list-decimal space-y-8 mb-12 pl-12 text-[#09083b] font-bold text-xl marker:text-[#09083b]">
+        {children}
+      </ol>
+    ),
+    roman: ({ children }: any) => (
+      <ol className="list-[lower-roman] space-y-8 mb-12 pl-12 text-[#09083b] font-bold text-xl marker:text-[#09083b]">
         {children}
       </ol>
     ),
   },
   listItem: {
     bullet: ({ children }: any) => (
-      <li className="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
-        <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-[var(--gold-primary)] shrink-0" />
-        <span>{children}</span>
+      <li className="flex items-start gap-5 text-gray-700 text-lg md:text-xl font-light leading-relaxed">
+        <span className="mt-3.5 w-3 h-3 rounded-full bg-[#09083b] shrink-0 shadow-sm" />
+        <span className="flex-1">{children}</span>
       </li>
     ),
     number: ({ children }: any) => (
-      <li className="text-gray-600 text-lg font-medium leading-relaxed pl-2">
+      <li className="text-gray-700 text-lg md:text-xl font-light leading-relaxed pl-3">
+        {children}
+      </li>
+    ),
+    roman: ({ children }: any) => (
+      <li className="text-gray-700 text-lg md:text-xl font-light leading-relaxed pl-3 uppercase tracking-widest">
         {children}
       </li>
     ),
@@ -184,194 +214,298 @@ export default async function BlogsDetailsPage({
       id: slugify(block.children[0].text),
     })) || [];
 
-  const mainImageUrl = post.image
-    ? urlFor(post.image)?.url() || "/images/placeholder.jpg"
+  const mainImageUrl = post.mainImage
+    ? urlFor(post.mainImage)?.url() || "/images/placeholder.jpg"
     : "/images/placeholder.jpg";
 
   return (
-    <main className="min-h-screen bg-[#f9f9f7] w-full pt-32">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-
-          {/* Table of Contents - Desktop Left (Locked to furthest left) */}
-          {/* <aside className="hidden lg:block lg:col-span-5">
-            <div className="sticky top-40 space-y-8">
-              <div className="relative">
-                <div className="absolute left-0 top-0 bottom-0 w-px bg-gray-200" />
-                <nav className="flex flex-col gap-4 pl-6">
-                  <span className="text-[10px] font-bold text-[var(--gold-primary)] uppercase tracking-[0.2em] mb-2">
-                    Contents
-                  </span>
-                  {headings.map((heading: any, i: number) => (
-                    <a
-                      key={i}
-                      href={`#${heading.id}`}
-                      className={`text-sm font-bold transition-all hover:text-[var(--gold-primary)] leading-snug ${heading.level === "h3" ? "pl-4 text-gray-400 font-semibold" : "text-black"
-                        }`}
-                    >
-                      {heading.text}
-                    </a>
-                  ))}
-                </nav>
-              </div>
+    <BlogContentWrapper>
+      <main className="min-h-screen bg-white w-full pt-40 pb-20 selection:bg-blue-100 selection:text-[#09083b]">
+        <div className="max-w-screen-2xl mx-auto px-6 md:px-12 lg:px-24">
+          {/* Header Section */}
+          <div className="flex flex-col items-center text-center max-w-5xl mx-auto mb-16 md:mb-24">
+            <div className="flex items-center gap-3 text-[14px] font-bold text-gray-500 mb-8 uppercase tracking-[0.3em]">
+              <Link 
+                href="/blog" 
+                className="hover:text-[#09083b] transition-colors"
+              >
+                Blogs
+              </Link>
+              <ChevronRight size={14} className="text-gray-300" />
+              <span className="text-[#09083b] bg-[#09083b]/5 px-3 py-1 rounded-full">
+                {post.categories?.[0]?.title || "Article"}
+              </span>
             </div>
-          </aside> */}
 
-          {/* Header Area + Content + Sidebar */}
-          <div className="lg:col-span-10">
-            {/* Header Section */}
-            <div className="mb-12">
-              <div className="flex items-center gap-4 text-sm font-semibold text-gray-400 mb-6 uppercase tracking-wider">
-                <span className="text-[var(--gold-primary)]">
-                  {post.author?.name || "Author"}
-                </span>
-                <span>•</span>
-                <span>
+            <h1 className="text-4xl md:text-7xl font-light text-[#09083b] mb-12 onest leading-[1.1] tracking-tight antialiased">
+              {post.title}
+            </h1>
+
+            <div className="flex items-center gap-6 text-sm font-medium text-gray-600">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-[#09083b] flex items-center justify-center text-white font-bold text-lg">
+                  {(post.author?.name || "A")[0]}
+                </div>
+                <div className="text-left">
+                  <p className="text-[#09083b] font-bold">{post.author?.name || "Pegion Trails"}</p>
+                  <p className="text-gray-400 text-xs uppercase tracking-wider">Author</p>
+                </div>
+              </div>
+              <div className="w-px h-10 bg-gray-200" />
+              <div className="text-left">
+                <p className="text-[#09083b] font-bold">
                   {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    month: "short",
+                    month: "long",
                     day: "numeric",
                     year: "numeric",
                   })}
+                </p>
+                <p className="text-gray-400 text-xs uppercase tracking-wider">Published</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Featured Image */}
+          <div className="relative w-full aspect-21/10 rounded-[32px] md:rounded-[40px] overflow-hidden mb-16 md:mb-32 group border border-gray-100">
+            <Image
+              src={getImageUrl(post.mainImage)}
+              alt={post.title}
+              fill
+              className="object-cover transition-transform duration-1000 group-hover:scale-110"
+              priority
+            />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 relative">
+            {/* Main Content */}
+            <article className="lg:col-span-8 flex flex-col select-none">
+              <div className="prose prose-xl max-w-none prose-headings:text-[#09083b] prose-p:text-gray-700 prose-a:text-[#09083b]">
+                <PortableText value={post.body} components={components} />
+              </div>
+
+            {/* Tags + Share */}
+            <div className="mt-20 pt-12 border-t border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-10">
+              <div className="flex flex-col gap-6">
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-gray-400 flex items-center gap-2">
+                  <Tag size={14} className="text-[#09083b]" /> Article Tags
                 </span>
-              </div>
-
-              <h1 className="text-4xl md:text-6xl font-bold text-black mb-10 onest leading-tight max-w-4xl">
-                {post.title}
-              </h1>
-
-              <div className="relative w-full aspect-[21/12] rounded-[40px] overflow-hidden shadow-2xl mb-16">
-                <Image
-                  src={mainImageUrl}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute bottom-8 left-8 bg-black/50 backdrop-blur-md px-6 py-2 rounded-full text-white text-xs font-bold uppercase tracking-widest border border-white/20">
-                  {post.categories?.[0]?.title || "Article"}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 lg:gap-16">
-              {/* Main Content */}
-              <article className="lg:col-span-7">
-                {/* Mobile ToC */}
-                {headings.length > 0 && (
-                  <div className="lg:hidden mb-12 p-8 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                    <h4 className="text-sm font-bold text-[var(--gold-primary)] uppercase tracking-widest mb-6">
-                      Jump to Section
-                    </h4>
-                    <nav className="flex flex-col gap-4">
-                      {headings.map((heading: any, i: number) => (
-                        <a
-                          key={i}
-                          href={`#${heading.id}`}
-                          className={`text-base font-bold text-black hover:text-[var(--gold-primary)] transition-colors ${heading.level === "h3" ? "pl-4 text-gray-500 font-semibold text-sm" : ""
-                            }`}
-                        >
-                          {heading.text}
-                        </a>
-                      ))}
-                    </nav>
-                  </div>
-                )}
-
-                <div className="prose prose-lg max-w-none">
-                  <PortableText value={post.body} components={components} />
-                </div>
-
-                {/* Tags + Share */}
-                <div className="mt-16 pt-8 border-t border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-8">
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2">
-                      <Tag size={16} /> Tags:
+                <div className="flex flex-wrap gap-3">
+                  {post.categories?.map((cat: any) => (
+                    <span
+                      key={cat._id}
+                      className="text-sm font-bold px-6 py-2 bg-[#09083b]/5 text-[#09083b] rounded-full hover:bg-[#09083b] hover:text-white transition-all cursor-default"
+                    >
+                      {cat.title}
                     </span>
-                    <div className="flex flex-wrap gap-2">
-                      {post.categories?.map((cat: any) => (
-                        <span
-                          key={cat._id}
-                          className="text-xs font-semibold px-4 py-1 bg-gray-100 rounded-full"
-                        >
-                          {cat.title}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 text-gray-400">
-                    {[Facebook, Twitter, Linkedin, LinkIcon].map((Icon, i) => (
-                      <Icon key={i} size={18} />
-                    ))}
-                  </div>
+                  ))}
                 </div>
-              </article>
+              </div>
 
-              {/* Sidebar */}
-              <aside className="lg:col-span-3 space-y-12">
-                {/* Categories */}
-                <div className="p-8 bg-white rounded-3xl shadow-sm border border-gray-100">
-                  <h4 className="text-xl font-bold mb-6 border-b border-gray-100 pb-4">
-                    Category
-                  </h4>
-                  <ul className="space-y-4">
-                    {categories.map((cat) => (
-                      <li key={cat._id}>
-                        <Link
-                          href={`/blog?category=${cat.title}`}
-                          className="flex items-center justify-between text-gray-600 hover:text-[var(--gold-primary)]"
-                        >
-                          <span className="font-semibold text-sm flex items-center gap-2">
-                            <ChevronRight size={14} />
-                            {cat.title}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="flex flex-col gap-6">
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-gray-400 text-right">
+                  Share this story
+                </span>
+                <div className="flex gap-4 justify-end">
+                  {[Facebook, Twitter, Linkedin, LinkIcon].map((Icon, i) => (
+                    <button 
+                      key={i} 
+                      className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-[#09083b] hover:bg-[#09083b] hover:text-white transition-all shadow-sm group"
+                    >
+                      <Icon size={18} className="transition-transform group-hover:scale-110" />
+                    </button>
+                  ))}
                 </div>
-
-                {/* Recent Posts */}
-                <div className="p-8 bg-white rounded-3xl shadow-sm border border-gray-100">
-                  <h4 className="text-xl font-bold mb-6 border-b border-gray-100 pb-4">
-                    Recent News
-                  </h4>
-                  <div className="space-y-8">
-                    {recentPosts.map((rPost) => (
-                      <Link
-                        key={rPost._id}
-                        href={`/resources/blog/${rPost.slug.current}`}
-                        className="flex gap-4 group"
-                      >
-                        <div className="relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden">
-                          <Image
-                            src={
-                              rPost.image
-                                ? urlFor(rPost.image)?.url() || "/images/placeholder.jpg"
-                                : "/images/placeholder.jpg"
-                            }
-                            alt={rPost.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="flex flex-col justify-center">
-                          <h5 className="text-sm font-bold line-clamp-2 mb-1">
-                            {rPost.title}
-                          </h5>
-                          <span className="text-[10px] font-bold text-gray-400 uppercase">
-                            {new Date(rPost.publishedAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </aside>
+              </div>
             </div>
+          </article>
+
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-16">
+            <div className="sticky top-40 space-y-16">
+              {/* Table of Contents - Sidebar */}
+              {headings.length > 0 && (
+                <div className="p-10 bg-[#09083b]/2 rounded-[40px] border border-gray-50">
+                  <h4 className="text-xs font-bold text-[#09083b] uppercase tracking-[0.2em] mb-8 border-b border-gray-100 pb-4">
+                    On this page
+                  </h4>
+                  <nav className="flex flex-col gap-5">
+                    {headings.map((heading: any, i: number) => (
+                      <a
+                        key={i}
+                        href={`#${heading.id}`}
+                        className={`text-base transition-all hover:translate-x-1 ${
+                          heading.level === "h3" 
+                            ? "pl-6 text-gray-400 text-sm font-medium border-l border-gray-200" 
+                            : "text-[#09083b] font-bold hover:text-blue-600"
+                        }`}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              )}
+
+              {/* Recent Posts - Premium Cards */}
+              <div className="space-y-8">
+                <h4 className="text-xs font-bold text-[#09083b] uppercase tracking-[0.2em] mb-4">
+                  Latest Insights
+                </h4>
+                <div className="space-y-6">
+                  {recentPosts.filter(p => p._id !== post._id).slice(0, 3).map((rPost) => (
+                    <Link
+                      key={rPost._id}
+                      href={`/blog/${rPost.slug.current}`}
+                      className="flex gap-5 group"
+                    >
+                      <div className="relative w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-md">
+                        <Image
+                          src={
+                            rPost.mainImage
+                              ? urlFor(rPost.mainImage)?.url() || "/images/placeholder.jpg"
+                              : "/images/placeholder.jpg"
+                          }
+                          alt={rPost.title}
+                          fill
+                          className="object-cover transition-transform group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center">
+                        <h5 className="text-base font-bold text-[#09083b] line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors mb-2">
+                          {rPost.title}
+                        </h5>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          {new Date(rPost.publishedAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric"
+                          })}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Newsletter/CTA */}
+              <div className="p-10 bg-[#09083b] rounded-[40px] text-white shadow-xl flex flex-col gap-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                <h4 className="text-2xl font-bold leading-tight relative z-10">
+                  Stay updated with Pegion Trails
+                </h4>
+                <p className="text-white/70 text-sm leading-relaxed relative z-10">
+                  Get the latest stories and insights onto real estate and lifestyle delivered box.
+                </p>
+                <div className="relative z-10">
+                  <input 
+                    type="email" 
+                    placeholder="Your email address" 
+                    className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:outline-none focus:bg-white/20 transition-all text-sm mb-4 placeholder:text-white/40"
+                  />
+                  <button className="w-full bg-white text-[#09083b] font-bold py-4 rounded-2xl hover:bg-gray-100 transition-all flex items-center justify-center gap-2">
+                    Subscribe <Send size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {/* Premium CTA Section */}
+        <div className="mt-24 md:mt-32 p-10 md:p-20 bg-gradient-to-br from-[#09083b] to-[#1a1a4a] rounded-[60px] md:rounded-[80px] text-white flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+          
+          <div className="relative z-10 max-w-2xl text-center lg:text-left">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 onest leading-tight">
+              Ready to find your <span className="text-blue-400">dream property</span> in Kenya?
+            </h2>
+            <p className="text-lg md:text-xl text-white/70 mb-10 font-light">
+              Our experts are ready to guide you through every step of your real estate journey. Whether you're buying, selling, or investing.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link 
+                href="/contact" 
+                className="bg-white text-[#09083b] font-bold px-10 py-5 rounded-2xl hover:bg-gray-100 transition-all text-lg shadow-lg"
+              >
+                Talk to an Expert
+              </Link>
+              <Link 
+                href="/properties" 
+                className="bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold px-10 py-5 rounded-2xl hover:bg-white/20 transition-all text-lg"
+              >
+                Explore Listings
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative z-10 w-full lg:w-96 aspect-square rounded-[40px] overflow-hidden shadow-2xl rotate-3">
+             <Image 
+                src={mainImageUrl}
+                alt="Find your story"
+                fill
+                className="object-cover"
+             />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+             <div className="absolute bottom-8 left-8 text-white">
+                <p className="text-sm font-bold uppercase tracking-widest mb-1">Featured Guide</p>
+                <p className="text-xl font-bold truncate max-w-[200px]">{post.title}</p>
+             </div>
+          </div>
+        </div>
+
+        {/* Related Posts Bottom Section */}
+        <div className="mt-40 pt-24 border-t border-gray-100">
+          <div className="flex items-center justify-between mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-[#09083b] onest">
+              More Stories
+            </h2>
+            <Link 
+              href="/blog" 
+              className="group flex items-center gap-2 text-sm font-bold text-[#09083b] uppercase tracking-widest"
+            >
+              View All Posts 
+              <ChevronRight size={18} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {recentPosts.filter(p => p._id !== post._id).slice(0, 3).map((rPost) => (
+              <Link 
+                key={rPost._id}
+                href={`/blog/${rPost.slug.current}`} 
+                className="group"
+              >
+                <div className="relative w-full aspect-4/3 rounded-[20px] overflow-hidden mb-8">
+                  <Image
+                    src={
+                      rPost.mainImage
+                        ? urlFor(rPost.mainImage)?.url() || "/images/placeholder.jpg"
+                        : "/images/placeholder.jpg"
+                    }
+                    alt={rPost.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="px-2">
+                  <p className="text-[#09083b]/60 text-xs font-bold uppercase tracking-[0.2em] mb-3">
+                    {new Date(rPost.publishedAt).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric"
+                    })}
+                  </p>
+                  <h3 className="text-2xl font-bold text-[#09083b] group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                    {rPost.title}
+                  </h3>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
     </main>
+    </BlogContentWrapper>
   );
 }
