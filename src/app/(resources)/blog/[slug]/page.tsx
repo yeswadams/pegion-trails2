@@ -282,7 +282,7 @@ export default async function BlogsDetailsPage({
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-7xl font-light text-[#09083b] mb-12 onest leading-[1.1] tracking-tight antialiased">
+            <h1 className="text-4xl w-full md:text-5xl font-light text-[#09083b] mb-12 onest leading-[1.1] tracking-tight antialiased">
               {post.title}
             </h1>
 
