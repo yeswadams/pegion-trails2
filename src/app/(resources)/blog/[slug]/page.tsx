@@ -474,11 +474,11 @@ export default async function BlogsDetailsPage({
           </div>
 
           {/* Premium CTA Section */}
-          <div className="mt-24 md:mt-32 p-10 md:p-20 bg-gradient-to-br from-[#09083b] to-[#1a1a4a] rounded-[60px] md:rounded-[50px] text-white flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden shadow-2xl">
+          {/* <div className="mt-24 md:mt-32 p-10 md:p-20 bg-gradient-to-br from-[#09083b] to-[#1a1a4a] rounded-[60px] md:rounded-[50px] text-white flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
-            <div className="relative z-10 max-w-2xl text-center lg:text-left">
+            <div className="relative z-10 text-center lg:text-left items-center justify-center flex flex-col">
               <h2 className="text-3xl md:text-5xl font-bold mb-6 onest leading-tight">
                 Let’s build something{" "}
                 <span className="text-[#b8d7ff]">worth remembering</span>.
@@ -504,7 +504,7 @@ export default async function BlogsDetailsPage({
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Related Posts Bottom Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-24">
