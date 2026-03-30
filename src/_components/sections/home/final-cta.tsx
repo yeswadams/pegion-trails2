@@ -26,7 +26,7 @@ const FinalCTA = () => {
             href="/demo"
             className="px-10 py-5 text-xl font-bold bg-[#CBF382] text-[#09083B] rounded-full hover:scale-105 transition-transform"
           >
-            Book a demo
+            Book a call
           </Link>
           <Link
             href="/pricing"

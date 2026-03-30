@@ -29,7 +29,7 @@ const IntroVideo = () => {
             href="/demo"
             className="px-8 py-4 text-lg font-bold bg-[#09083B] w-fit text-[#D1E5FF] rounded-full hover:scale-105 transition-transform shrink-2"
           >
-            Book a demo
+            Book a call
           </Link>
         </div>
 

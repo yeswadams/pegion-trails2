@@ -61,6 +61,10 @@ const navData: NavItem[] = [
       // This will be handled by a specialized renderer
     ],
   },
+  {
+    label: "Blogs",
+    href: "/blog",
+  },
   { label: "Pricing", href: "/pricing" },
   { label: "Enterprise", href: "/enterprise" },
 ];
@@ -207,7 +211,7 @@ const Navbar = () => {
                 : "bg-white text-[#09083B]"
             }`}
           >
-            Book a demo
+            Book a call
           </Link>
           <Link
             href="/login"
@@ -330,7 +334,7 @@ const Navbar = () => {
               href="/demo"
               className="w-full text-center px-5 py-3 text-lg font-bold bg-[#FAF8F9] text-[#09083B] rounded-full"
             >
-              Book a demo
+              Book a call
             </Link>
             <Link
               href="/login"
