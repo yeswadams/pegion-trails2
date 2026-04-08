@@ -38,6 +38,34 @@ em {
   font-weight: 400;
 }
 
+@layer components {
+  .btn-roll {
+    @apply relative overflow-hidden inline-flex flex-col h-[44px] px-6 rounded-full font-bold text-sm transition-colors;
+    /* Ensure the text is centered vertically */
+    line-height: 44px;
+  }
+
+  /* The visible text and the hidden text */
+  .btn-roll span {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+
+  /* Create the duplicate text using a data-attribute */
+  .btn-roll::after {
+    content: attr(data-text);
+    @apply absolute left-0 w-full h-full text-center transition-transform duration-300 ease-in-out;
+    transform: translateY(100%);
+  }
+
+  /* Hover State: Move original text up and "after" text up */
+  .btn-roll:hover span {
+    transform: translateY(-100%);
+  }
+
+  .btn-roll:hover::after {
+    transform: translateY(0);
+  }
+}
 
 /* Hero Section images animation */
 

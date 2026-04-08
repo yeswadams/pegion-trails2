@@ -16,6 +16,10 @@ import {
   Disc,
   ExternalLink,
 } from "lucide-react";
+import { client, urlFor } from "@/lib/sanity/client";
+import { fetchSanityData } from "@/lib/sanity/actions";
+
+
 // --- TYPES & DATA ---
 // Defining the structure of our navigation data for type safety
 type SubLink = {
@@ -36,6 +40,58 @@ type NavItem = {
   href?: string;
   megaMenuData?: MegaMenuColumn[];
 };
+
+const RECENT_POSTS_QUERY = `
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc)[0...2] {
+    _id,
+    title,
+    slug,
+    mainImage,
+    excerpt,
+    categories[]->{title},
+    publishedAt
+  }
+`;
+const getImageUrl = (source: any) => {
+  if (!source) return "";
+  return urlFor(source).width(800).quality(80).url();
+};
+
+function NavbarBlogs({ posts }: { posts: any[] }) {
+  if (!posts || posts.length === 0) return null;
+
+  return (
+    <section className="max-w-full mx-auto flex flex-col gap-10">
+      {posts.map((post) => (
+        <Link
+          key={post._id}
+          href={`/blog/${post.slug.current}`}
+          className="group"
+        >
+          <article className="border-t border-gray-300 flex flex-col gap-6 items-start">
+            <div className="w-full rounded-xl overflow-hidden aspect-16/9">
+              <img
+                src={getImageUrl(post.mainImage)}
+                alt={post.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <span className="text-xs uppercase tracking-[0.2em] text-gray-800 font-black">
+                {post.categories?.[0]?.title || "Article"}
+              </span>
+
+              <h3 className="text-2xl font-normal font-serif group-hover:underline leading-tight text-[#09083b] transition-colors">
+                {post.title}
+              </h3>
+            </div>
+          </article>
+        </Link>
+      ))}
+    </section>
+  );
+}
 
 // Sample Data mirroring the structure in the image
 const navData: NavItem[] = [
@@ -107,11 +163,27 @@ import { usePathname } from "next/navigation";
 // --- MAIN NAVBAR COMPONENT ---
 const Navbar = () => {
   const pathname = usePathname();
-  const isBlogPage = pathname?.includes("/blog") || pathname?.includes("/resources");
+  const isBlogPage =
+    pathname?.includes("/blog") || pathname?.includes("/resources");
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const [recentBlogs, setRecentBlogs] = useState<any[]>([]);
+
+  // Fetch blogs for Mega Menu
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const { data: posts, error } = await fetchSanityData(RECENT_POSTS_QUERY);
+        if (error) throw new Error(error);
+        if (posts) setRecentBlogs(posts);
+      } catch (error) {
+        console.error("Error fetching blogs for navbar:", error);
+      }
+    };
+    fetchBlogs();
+  }, []);
 
   // 1. Handle Scroll Behavior
   useEffect(() => {
@@ -138,20 +210,19 @@ const Navbar = () => {
   )?.megaMenuData;
 
   // Dynamic classes based on state
-  const navbarClasses = `fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
-    isScrolled || hoveredNavItem || isMobileMenuOpen
-      ? "bg-[#09083B] shadow-scroll py-3"
-      : isBlogPage 
-        ? "bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm"
-        : "bg-transparent py-5"
-  }`;
+  const navbarClasses = `fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${isScrolled || hoveredNavItem || isMobileMenuOpen
+    ? "bg-[#09083B] shadow-scroll py-3"
+    : isBlogPage
+      ? "bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm"
+      : "bg-transparent py-5"
+    }`;
 
   const linkColorClass =
     isScrolled || hoveredNavItem || isMobileMenuOpen
       ? "text-white"
       : isBlogPage
         ? "text-[#09083B]"
-        : "text-white"; 
+        : "text-white";
 
   return (
     <nav
@@ -205,21 +276,19 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-4">
           <Link
             href="/demo"
-            className={`px-6 py-2.5 text-[15px] font-bold justify-center items-center rounded-full hover:scale-105 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg ${
-              isScrolled || hoveredNavItem
-                ? "bg-[#D1E5FF] text-[#09083B]"
-                : "bg-white text-[#09083B]"
-            }`}
+            className={`px-6 py-2.5 text-[15px] font-bold justify-center items-center rounded-full hover:scale-105 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg ${isScrolled || hoveredNavItem
+              ? "bg-[#D1E5FF] text-[#09083B]"
+              : "bg-white text-[#09083B]"
+              }`}
           >
             Book a call
           </Link>
           <Link
             href="/login"
-            className={`px-6 py-2.5 text-[15px] font-bold border-2 rounded-full transition-all duration-200 ${
-              isScrolled || hoveredNavItem
-                ? "border-white text-white hover:bg-white hover:text-[#09083B]"
-                : "border-white text-white hover:bg-white hover:text-[#09083B]"
-            }`}
+            className={`px-6 py-2.5 text-[15px] font-bold border-2 rounded-full transition-all duration-200 ${isScrolled || hoveredNavItem
+              ? "border-white text-white hover:bg-white hover:text-[#09083B]"
+              : "border-white text-white hover:bg-white hover:text-[#09083B]"
+              }`}
           >
             Sign In
           </Link>
@@ -240,18 +309,17 @@ const Navbar = () => {
 
       {/* MEGA MENU CONTAINER (Desktop) */}
       <div
-        className={`absolute top-full left-0 w-full transition-all duration-300 ease-in-out origin-top border-t border-[#09083B]/10 shadow-xl z-40 bg-mega-bg text-mega-text ${
-          activeMegaMenu ||
+        className={`absolute top-full left-0 w-full transition-all duration-300 ease-in-out origin-top border-t border-[#09083B]/10 shadow-xl z-40 bg-mega-bg text-mega-text ${activeMegaMenu ||
           hoveredNavItem === "Resources" ||
           hoveredNavItem === "Why us" ||
           hoveredNavItem === "Services"
-            ? "opacity-100 visible scale-y-100"
-            : "opacity-0 invisible scale-y-95"
-        } ${hoveredNavItem === "Why us" ? "h-[45vh] overflow-hidden" : "h-[90vh] overflow-y-auto"}`}
+          ? "opacity-100 visible scale-y-100"
+          : "opacity-0 invisible scale-y-95"
+          } ${hoveredNavItem === "Why us" ? "h-[45vh] overflow-hidden" : "h-[90vh] overflow-y-auto"}`}
         onMouseEnter={() => setHoveredNavItem(hoveredNavItem)}
       >
         {hoveredNavItem === "Resources" ? (
-          <ResourcesMegaMenu />
+          <ResourcesMegaMenu recentBlogs={recentBlogs} />
         ) : hoveredNavItem === "Why us" ? (
           <WhyUsMegaMenu />
         ) : hoveredNavItem === "Services" ? (
@@ -324,6 +392,7 @@ const Navbar = () => {
               <MobileMenuItem
                 key={item.label}
                 item={item}
+                recentBlogs={recentBlogs}
                 closeMenu={() => setIsMobileMenuOpen(false)}
               />
             ))}
@@ -352,9 +421,11 @@ const Navbar = () => {
 // --- Helper Component for Mobile Accordions ---
 const MobileMenuItem = ({
   item,
+  recentBlogs,
   closeMenu,
 }: {
   item: NavItem;
+  recentBlogs: any[];
   closeMenu: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -398,7 +469,7 @@ const MobileMenuItem = ({
         ) : item.label === "Why us" ? (
           <MobileWhyUsContent closeMenu={closeMenu} />
         ) : item.label === "Resources" ? (
-          <MobileResourcesContent closeMenu={closeMenu} />
+          <MobileResourcesContent recentBlogs={recentBlogs} closeMenu={closeMenu} />
         ) : (
           item.megaMenuData?.map((col, idx) => (
             <div key={idx} className="mb-6">
@@ -525,7 +596,10 @@ const MobileServicesContent = ({ closeMenu }: { closeMenu: () => void }) => {
 
       <div className="space-y-4">
         <div className="bg-[#2D6A4F] text-white text-xs font-bold px-3 py-1.5 rounded-md inline-flex items-center gap-1 ">
-          <em className="font-serif text-red-400">Specialized production services</em> <ArrowUpRight className="w-3 h-3" />
+          <em className="font-serif text-red-400">
+            Specialized production services
+          </em>{" "}
+          <ArrowUpRight className="w-3 h-3" />
         </div>
         <div className="grid gap-4 pl-1">
           {productionServices.map((s, idx) => (
@@ -629,7 +703,13 @@ const MobileWhyUsContent = ({ closeMenu }: { closeMenu: () => void }) => {
   );
 };
 
-const MobileResourcesContent = ({ closeMenu }: { closeMenu: () => void }) => {
+const MobileResourcesContent = ({
+  recentBlogs,
+  closeMenu
+}: {
+  recentBlogs: any[],
+  closeMenu: () => void
+}) => {
   return (
     <div className="space-y-8 pb-6">
       <div className="space-y-4">
@@ -657,27 +737,30 @@ const MobileResourcesContent = ({ closeMenu }: { closeMenu: () => void }) => {
         <h4 className="text-[10px] font-bold uppercase tracking-widest text-[#09083B]/40">
           Featured Blog
         </h4>
-        <Link
-          href="/resources/blog/saas-design"
-          onClick={closeMenu}
-          className="block space-y-3"
-        >
-          <div className="aspect-video rounded-lg overflow-hidden bg-[#E3F2FF] relative flex items-center justify-center p-6">
-            <div className="bg-white/80 p-3 rounded-lg text-center shadow-sm">
-              <p className="text-[8px] font-bold uppercase tracking-tighter">
-                Your video. Your brand.
-              </p>
-              <div className="mt-1 flex justify-center">
-                <div className="h-4 w-12 bg-blue-600 rounded flex items-center justify-center text-[7px] text-white font-bold">
-                  CTA
-                </div>
+        <div className="space-y-6">
+          {recentBlogs.map((post) => (
+            <Link
+              key={post._id}
+              href={`/blog/${post.slug.current}`}
+              onClick={closeMenu}
+              className="block space-y-3 pb-6 border-b border-[#09083B]/10 last:border-0"
+            >
+              <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
+                <img
+                  src={getImageUrl(post.mainImage)}
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            </div>
-          </div>
-          <h4 className="font-bold text-sm leading-tight">
-            Design systems for SaaS: Top 6 agencies for enterprises
-          </h4>
-        </Link>
+              <h4 className="font-bold text-sm leading-tight group-active:text-blue-700">
+                {post.title}
+              </h4>
+            </Link>
+          ))}
+          {recentBlogs.length === 0 && (
+            <p className="text-sm text-gray-500">Loading blogs...</p>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -873,7 +956,7 @@ const ServicesMegaMenu = () => {
   ];
 
   return (
-    <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-12 grid grid-cols-3 gap-12 text-[#09083B]">
+    <div className="max-w-full mx-auto px-6 md:px-10 py-12 grid grid-cols-3 gap-12 text-[#09083B]">
       {/* Column 1: Creative */}
       <div>
         <div className="bg-[#CBF382] text-[#09083B] text-sm font-bold px-4 py-2 rounded-lg inline-flex items-center gap-2 mb-8 group cursor-pointer hover:bg-[#b8db75] transition">
@@ -1006,9 +1089,10 @@ const ServicesMegaMenu = () => {
   );
 };
 
-const ResourcesMegaMenu = () => {
+const ResourcesMegaMenu = ({ recentBlogs }: { recentBlogs: any[] }) => {
+
   return (
-    <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-12 grid grid-cols-12 gap-12 text-[#09083B]">
+    <div className="max-w-full mx-auto px-6 md:px-10 py-12 grid grid-cols-12 gap-12 text-[#09083B]">
       {/* Learning Center */}
       <div className="col-span-3">
         <div className="flex items-center gap-2 mb-8 group cursor-pointer hover:text-blue-700 transition">
@@ -1043,64 +1127,13 @@ const ResourcesMegaMenu = () => {
       {/* Blog */}
       <div className="col-span-5 border-x border-[#09083B]/10 px-8">
         <div className="flex items-center gap-2 mb-8 group cursor-pointer hover:text-blue-700 transition">
-          <h3 className="text-sm font-bold uppercase tracking-wider">Blog</h3>
+          <Link href="/blog" className="text-sm font-bold uppercase tracking-wider">
+            Blog
+          </Link>
           <ArrowUpRight className="w-4 h-4 -translate-y-px" />
         </div>
+        <NavbarBlogs posts={recentBlogs} />
 
-        {/* Featured Blog */}
-        <div className="mb-10">
-          <div className="relative rounded-lg overflow-hidden mb-6 aspect-video group bg-[#E3F2FF]">
-            <div className="absolute top-4 left-4 bg-[#09083B] text-[#D1E5FF] text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wide">
-              Blog
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center p-8">
-              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-sm w-full max-w-[280px]">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 bg-[#09083B] rounded flex items-center justify-center text-white text-[10px] font-bold italic">
-                    V
-                  </div>
-                  <span className="font-bold text-xs uppercase tracking-wider">
-                    Your video. Your brand.
-                  </span>
-                </div>
-                <button className="bg-blue-600 text-white text-[10px] font-bold py-2 px-4 rounded-md shadow-sm mb-3">
-                  CTA Here
-                </button>
-                <p className="text-[10px] text-gray-600 leading-tight">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore.
-                </p>
-              </div>
-            </div>
-          </div>
-          <h4 className="font-bold text-lg leading-tight hover:text-blue-700 cursor-pointer transition">
-            Design systems for SaaS: Top 6 agencies for enterprises
-          </h4>
-        </div>
-
-        {/* Second Blog Card */}
-        <div className="pt-8 border-t border-[#09083B]/10">
-          <div className="rounded-lg overflow-hidden mb-6 aspect-16/6 bg-[#F5FAFF] relative p-6 flex items-center justify-between border border-[#09083B]/5">
-            <div className="flex-1">
-              <h5 className="font-bold text-base leading-tight">
-                Creative Delivery: Traditional Agency vs Global Creative Service
-              </h5>
-            </div>
-            <div className="flex-1 pl-4">
-              <div className="space-y-2">
-                <div className="h-2 w-full bg-[#E3F2FF] rounded-full overflow-hidden">
-                  <div className="h-full w-2/3 bg-blue-400"></div>
-                </div>
-                <div className="h-2 w-full bg-[#E3F2FF] rounded-full overflow-hidden">
-                  <div className="h-full w-4/5 bg-green-400"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <h4 className="font-bold text-lg leading-tight hover:text-blue-700 cursor-pointer transition">
-            10 Creative Services Examples From Top Brands in 2026
-          </h4>
-        </div>
       </div>
 
       {/* Customer Stories */}
@@ -1114,8 +1147,8 @@ const ResourcesMegaMenu = () => {
 
         <div className="space-y-10">
           {/* Vimeo Card */}
-          <div className="group cursor-pointer">
-            <div className="relative rounded-lg overflow-hidden aspect-16/10 bg-gray-900 mb-6 flex items-center justify-center p-12 transition group-hover:shadow-xl">
+          <Link href="/resources/customer-stories/vimeo" className="group block">
+            <div className="relative rounded-lg overflow-hidden aspect-16/10 bg-gray-900 mb-6 flex items-center justify-center p-12 transition group-hover:shadow-xl group-hover:scale-[1.02] duration-300">
               <h2 className="text-white text-6xl font-black italic tracking-tighter opacity-80 group-hover:opacity-100 transition">
                 vimeo
               </h2>
@@ -1123,11 +1156,11 @@ const ResourcesMegaMenu = () => {
             <h4 className="font-bold text-lg leading-tight group-hover:text-blue-700 transition">
               Transforming creative workflows with AI at Vimeo
             </h4>
-          </div>
+          </Link>
 
           {/* Fortune 500 Card */}
-          <div className="group cursor-pointer">
-            <div className="relative rounded-lg overflow-hidden aspect-16/10 bg-gray-200 mb-6 flex items-center justify-center transition group-hover:shadow-xl">
+          <Link href="/resources/customer-stories/fortune-500" className="group block">
+            <div className="relative rounded-lg overflow-hidden aspect-16/10 bg-gray-200 mb-6 flex items-center justify-center transition group-hover:shadow-xl group-hover:scale-[1.02] duration-300">
               <div className="absolute inset-0 bg-linear-to-br from-black/40 to-black/10 z-10"></div>
               <img
                 src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=800"
@@ -1143,7 +1176,7 @@ const ResourcesMegaMenu = () => {
             <h4 className="font-bold text-lg leading-tight group-hover:text-blue-700 transition">
               How a Fortune 500 doubled their AI adoption
             </h4>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

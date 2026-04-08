@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased justify-between`}
+        suppressHydrationWarning
       >
         <Navbar />
         <main className="flex flex-col">{children}</main>

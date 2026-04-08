@@ -5,7 +5,7 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "7qsmfcus",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
-  useCdn: false, // Set to false for real-time updates or localized caching
+  useCdn: true, // Set to true for edge caching and better reliability on the client side
 });
 
 const builder = imageUrlBuilder(client);
@@ -69,4 +69,18 @@ export async function getAllCategories() {
     "count": count(*[_type == "post" && references(^._id)])
   }`;
   return await client.fetch(query);
+}
+
+export async function getLatestTwoPosts() {
+  const query = `*[_type == "post"] | order(publishedAt desc)[0...2] {
+    title,
+    "slug": slug.current,
+    excerpt,
+    "imageUrl": mainImage.asset->url,
+    publishedAt
+  }`;
+
+  // This returns an array with exactly 2 objects (or fewer if you only have 1 post)
+  const posts = await client.fetch(query);
+  return posts;
 }

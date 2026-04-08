@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# windows
+# git clone -c core.protectNTFS=false <repo>
+# git ls-files | findstr Zone.Identifier
+# git ls-files | findstr Zone.Identifier | ForEach-Object { git rm --cached "$_" }
+*:Zone.Identifier

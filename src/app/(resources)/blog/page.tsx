@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { client, getAllPosts, urlFor } from "@/lib/sanity/client";
-// import { getAllPosts, urlFor } from "@/lib/sanit";
 import Image from "next/image";
+import PostGrid from "./postGrid";
 import { div } from "framer-motion/m";
 
 export const revalidate = 30;
@@ -63,7 +63,7 @@ export default async function BlogPage() {
     <div className="flex flex-col w-full bg-white antialiased font-sans">
       <BlogHero posts={data.hero} />
       <AISection posts={data.aiSection} />
-      <PostGrid posts={data.feed} />
+      <PostGrid initialPosts={data.feed} />
     </div>
   );
 }
@@ -233,63 +233,4 @@ function AISection({ posts }: { posts: any[] }) {
     </section>
   );
 }
-
-/* ---------------- MAIN FEED ---------------- */
-
-function PostGrid({ posts }: { posts: any[] }) {
-  if (!posts || posts.length === 0) return null;
-
-  return (
-    <section className="max-w-full mx-auto px-6 md:px-12 py-28">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-        {posts.map((post) => (
-          <Link
-            key={post._id}
-            href={`/blog/${post.slug.current}`}
-            className="group"
-          >
-            <article className="border-t border-gray-300 pt-10 ">
-              <div className="rounded-xl overflow-hidden mb-8 aspect-[4/3] bg-gray-50">
-                <img
-                  src={getImageUrl(post.mainImage)}
-                  alt={post.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-
-              <div className="flex flex-col gap-4">
-                <span className="text-xs uppercase tracking-[0.2em] text-gray-800 font-black">
-                  {post.categories?.[0]?.title || "Article"}
-                </span>
-
-                <h3 className="text-2xl font-normal font-serif group-hover:underline leading-tight text-[#09083b] transition-colors">
-                  {post.title}
-                </h3>
-
-                <p className="text-gray-500 text-sm line-clamp-2 leading-relaxed">
-                  {post.excerpt}
-                </p>
-
-                <p className="text-xs text-gray-400 mt-2 font-medium">
-                  {post.publishedAt
-                    ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                      })
-                    : ""}
-                </p>
-              </div>
-            </article>
-          </Link>
-        ))}
-      </div>
-
-      <div className="mt-24 flex justify-center">
-        <button className="px-12 py-4 border border-[var(--color-primary)] text-[var(--color-primary)] rounded-full text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition active:scale-95">
-          Load more
-        </button>
-      </div>
-    </section>
-  );
-}
+
