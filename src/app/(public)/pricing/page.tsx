@@ -11,7 +11,7 @@ import { SERVICE_GROUPS } from "@/lib/pricing";
 
 const textReveal = {
   hidden: { y: 40, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: cubicBezier(0.22, 1, 0.36, 1) } }
+  visible: { y: 0, opacity: 1 }
 };
 
 const containerVariants = {
@@ -42,13 +42,13 @@ export default function PricingPage() {
         </div>
 
         <div className="relative z-20 text-center max-w-5xl">
-          <motion.span initial="hidden" animate="visible" variants={textReveal} className="text-[#C6DFFF] font-mono tracking-widest uppercase text-sm mb-4 block">
+          <motion.span initial="hidden" animate="visible" variants={textReveal} transition={{ duration: 0.8, ease: cubicBezier(0.22, 1, 0.36, 1) }} className="text-[#C6DFFF] font-mono tracking-widest uppercase text-sm mb-4 block">
             Pegion Trails // Investment Guide 2026
           </motion.span>
-          <motion.h1 initial="hidden" animate="visible" variants={textReveal} className="text-7xl md:text-9xl font-bold tracking-tighter leading-none mb-8">
+          <motion.h1 initial="hidden" animate="visible" variants={textReveal} transition={{ duration: 0.8, ease: cubicBezier(0.22, 1, 0.36, 1) }} className="text-7xl md:text-9xl font-bold tracking-tighter leading-none mb-8">
             Outcome-Based <br /> <span className="italic font-serif font-light text-blue-200">Economics.</span>
           </motion.h1>
-          <motion.p initial="hidden" animate="visible" variants={textReveal} className="text-xl md:text-2xl text-white/60 max-w-3xl mx-auto font-light leading-relaxed">
+          <motion.p initial="hidden" animate="visible" variants={textReveal} transition={{ duration: 0.8, ease: cubicBezier(0.22, 1, 0.36, 1) }} className="text-xl md:text-2xl text-white/60 max-w-3xl mx-auto font-light leading-relaxed">
             We don’t bill for &quot;hours spent.&quot; We bill for the value we create and the technical infrastructure we build. Transparency is our baseline.
           </motion.p>
         </div>
