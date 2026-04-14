@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, cubicBezier } from "framer-motion";
 import { 
   ChevronRight, Sparkles, Layers, Zap, 
   CreditCard, ShieldCheck, Info 
@@ -11,7 +11,7 @@ import { SERVICE_GROUPS } from "@/lib/pricing";
 
 const textReveal = {
   hidden: { y: 40, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+  visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: cubicBezier(0.22, 1, 0.36, 1) } }
 };
 
 const containerVariants = {
@@ -21,7 +21,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 export default function PricingPage() {
@@ -49,7 +49,7 @@ export default function PricingPage() {
             Outcome-Based <br /> <span className="italic font-serif font-light text-blue-200">Economics.</span>
           </motion.h1>
           <motion.p initial="hidden" animate="visible" variants={textReveal} className="text-xl md:text-2xl text-white/60 max-w-3xl mx-auto font-light leading-relaxed">
-            We don’t bill for "hours spent." We bill for the value we create and the technical infrastructure we build. Transparency is our baseline.
+            We don’t bill for &quot;hours spent.&quot; We bill for the value we create and the technical infrastructure we build. Transparency is our baseline.
           </motion.p>
         </div>
       </section>
@@ -58,7 +58,7 @@ export default function PricingPage() {
       <section className="py-32 px-6 max-w-7xl mx-auto border-t border-white/10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <h2 className="text-5xl font-bold tracking-tight">The "Standard vs. Per-Client" <br />Approach</h2>
+            <h2 className="text-5xl font-bold tracking-tight">The &quot;Standard vs. Per-Client&quot; <br />Approach</h2>
             <div className="prose prose-invert lg:prose-xl text-white/50">
               <p>In a creative agency, no two problems are identical. That&apos;s why we operate using a dual-rate card system inspired by industry leaders.</p>
               <div className="space-y-6 mt-10">
@@ -92,7 +92,7 @@ export default function PricingPage() {
             <div className="mt-12 pt-8 border-t border-white/10"><span className="text-4xl font-bold text-[#C6DFFF]">-15%</span><p className="text-[10px] font-mono uppercase tracking-widest mt-2">Avg. Partner Savings</p></div>
           </div>
           <div className="p-12 rounded-[3rem] bg-white/[0.02] border border-white/10">
-            <Info size={32} className="text-[#C6DFFF] mb-8" /><h3 className="text-xl font-bold mb-4">The "Perfect Finish"</h3><p className="text-white/40 text-sm">Every project includes two major revision cycles.</p>
+            <Info size={32} className="text-[#C6DFFF] mb-8" /><h3 className="text-xl font-bold mb-4">The &quot;Perfect Finish&quot;</h3><p className="text-white/40 text-sm">Every project includes two major revision cycles.</p>
           </div>
           <div className="md:col-span-2 p-12 rounded-[3rem] bg-white/[0.02] border border-white/10 flex items-center gap-12">
             <ShieldCheck size={64} className="text-[#C6DFFF] shrink-0 opacity-50" />
@@ -114,7 +114,7 @@ export default function PricingPage() {
                   </div>
                   <p className="text-white/50 text-lg italic">{group.description}</p>
                 </div>
-                <div className="mt-6 md:mt-0"><span className="text-sm font-mono text-white/30">0{groupIdx + 1} //</span></div>
+                <div className="mt-6 md:mt-0"><span className="text-sm font-mono text-white/30">0{groupIdx + 1} /</span></div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {group.services.map((service) => (
