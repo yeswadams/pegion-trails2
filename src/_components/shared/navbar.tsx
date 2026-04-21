@@ -222,7 +222,7 @@ const Navbar = () => {
   const linkColorClass =
     isScrolled || hoveredNavItem || isMobileMenuOpen
       ? "text-white"
-      : isBlogPage
+      : isBlogPage || isPricingPage || isServicesPage
         ? "text-[#09083B]"
         : "text-white";
 
