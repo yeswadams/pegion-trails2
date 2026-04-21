@@ -165,6 +165,8 @@ const Navbar = () => {
   const pathname = usePathname();
   const isBlogPage =
     pathname?.includes("/blog") || pathname?.includes("/resources");
+  const isPricingPage = pathname?.include("./pricing");
+  const isServicesPage = pathname?.inclde(./services");
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -212,7 +214,7 @@ const Navbar = () => {
   // Dynamic classes based on state
   const navbarClasses = `fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${isScrolled || hoveredNavItem || isMobileMenuOpen
     ? "bg-[#09083B] shadow-scroll py-3"
-    : isBlogPage
+    : isBlogPage || isPricingPage || isServicesPage
       ? "bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm"
       : "bg-transparent py-5"
     }`;
