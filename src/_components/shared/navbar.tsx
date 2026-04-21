@@ -165,8 +165,8 @@ const Navbar = () => {
   const pathname = usePathname();
   const isBlogPage =
     pathname?.includes("/blog") || pathname?.includes("/resources");
-  const isPricingPage = pathname?.include("./pricing");
-  const isServicesPage = pathname?.inclde("./services");
+  const isPricingPage = pathname?.includes("./pricing");
+  const isServicesPage = pathname?.incldes("./services");
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
