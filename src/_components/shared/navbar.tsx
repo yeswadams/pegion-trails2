@@ -167,6 +167,7 @@ const Navbar = () => {
     pathname?.includes("/blog") || pathname?.includes("/resources");
   const isPricingPage = pathname?.includes("/pricing");
   const isServicesPage = pathname?.includes("/services");
+  const isTeamPage = pathname?.includes("/why-us") || pathname?.includes("/creative-talent");
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -214,7 +215,7 @@ const Navbar = () => {
   // Dynamic classes based on state
   const navbarClasses = `fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${isScrolled || hoveredNavItem || isMobileMenuOpen
     ? "bg-[#09083B] shadow-scroll py-3"
-    : isBlogPage || isPricingPage || isServicesPage
+    : isBlogPage || isPricingPage || isServicesPage || isTeamPage
       ? "bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm"
       : "bg-transparent py-5"
     }`;
@@ -222,7 +223,7 @@ const Navbar = () => {
   const linkColorClass =
     isScrolled || hoveredNavItem || isMobileMenuOpen
       ? "text-white"
-      : isBlogPage || isPricingPage || isServicesPage
+      : isBlogPage || isPricingPage || isServicesPage || isTeamPage
         ? "text-[#09083B]"
         : "text-white";
 
@@ -778,7 +779,7 @@ const WhyUsMegaMenu = () => {
       >
         <div className="aspect-16/10 rounded-lg overflow-hidden mb-5 shadow-sm group-hover:shadow-md transition-all duration-300">
           <img
-            src="https://images.unsplash.com/photo-1522071823991-b19c0652077f?auto=format&fit=crop&q=80&w=800"
+            src="https://media.istockphoto.com/id/2196708273/photo/team-representing-together-everyone-achieves-more-text-on-wooden-stick.jpg?s=612x612&w=0&k=20&c=9RYg6KSiUNY_6lyDzjooG1yVdEiQIaH5-mm47w12qiQ="
             alt="Our creative talent"
             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
           />
@@ -795,7 +796,7 @@ const WhyUsMegaMenu = () => {
       <Link href="/why-us/ai-excellence" className="group block cursor-pointer">
         <div className="aspect-16/10 rounded-lg overflow-hidden mb-5 shadow-sm group-hover:shadow-md transition-all duration-300 relative bg-gray-900">
           <img
-            src="https://images.unsplash.com/photo-1620712943543-bcc4638a77d0?auto=format&fit=crop&q=80&w=800"
+            src="https://media.istockphoto.com/id/2205967840/photo/robot-hand-giving-digital-badge-of-excellence-and-five-stars-to-human-hand-in-modern-office.jpg?s=612x612&w=0&k=20&c=i44n_bJr-Ih70dDttZw2yrEBoWPvDn7rddvKkcf9CIo="
             alt="AI excellence"
             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500 opacity-90 group-hover:opacity-100"
           />
