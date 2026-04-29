@@ -33,11 +33,11 @@ const VideoScrollSection = () => {
         {/* HEADER AREA */}
         <div className="text-center mb-16">
           <p className="text-[18px] uppercase tracking-[0.1px] font-bold text-[#09083B]/60 mb-6">
-            Our Work
+            Our Expertise
           </p>
-          <h2 className="text-4xl md:text-6xl font-bold text-[#09083B] leading-tight max-w-3xl mx-auto">
-            From high tech to high <br />
-            <em className="relative inline-block">fashion and beyond</em>
+          <h2 className="text-4xl md:text-6xl font-normal text-[#09083B] leading-tight max-w-3xl mx-auto">
+            We design {""}
+            <em className="relative inline-block">Creative Solutions</em>
           </h2>
         </div>
 
@@ -46,7 +46,7 @@ const VideoScrollSection = () => {
           <motion.div
             style={{ width, borderRadius }}
             className="relative aspect-video bg-[#09083B] overflow-hidden shadow-2xl cursor-pointer rounded-full"
-            onClick={() => setIsOpen(true)}
+            // onClick={() => setIsOpen(true)}
           >
             <video
               autoPlay
@@ -54,16 +54,16 @@ const VideoScrollSection = () => {
               loop
               playsInline
               className="w-full h-full object-cover opacity-80"
+              src="/videos/liko.mp4"
             >
-              <source src="https://www.youtube.com/watch?v=U5f3iufE-bI&pp=ygUSY3JlYXRpdmUgc2hvd3JlZWxz" type="video/mp4" />
             </video>
 
             {/* Play Icon Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            {/* <div className="absolute inset-0 flex items-center justify-center">
               <div className="bg-white/20 backdrop-blur-md aspect-4/3 rounded-2xl px-4 py-2 md:px-8 md:py-4 flex items-center justify-center border border-white/30">
                 <Play className="text-white" size={40} />
               </div>
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </div>

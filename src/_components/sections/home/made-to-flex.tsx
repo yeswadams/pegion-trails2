@@ -5,8 +5,8 @@ import React from "react";
 const MadeToFlex = () => {
   const steps = [
     {
-      title: "Top global talent",
-      desc: "Access a curated pool of world-class designers, videographers, and creative strategists.",
+      title: "Top Talent",
+      desc: "We are a team of creatives, designers, strategists, and developers who are ready to help you build the best solutions for your business.",
       img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80",
     },
     {
@@ -26,11 +26,10 @@ const MadeToFlex = () => {
       <div className="max-w-full mx-auto">
         <div className="text-center mb-16">
           <p className="text-[16px] uppercase tracking-[0.2em] font-bold text-gray-400 mb-4">
-            Made to flex
+            Why Choose Us
           </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#FAF8F9]">
-            Top-tier talent. Fast execution. Real responsiveness. <br /> A
-            global team ready <em>to scale with you</em>.
+          <h2 className="text-3xl md:text-6xl font-light text-[#FAF8F9]">
+            We are a team of <em>Creatives</em> <br /> Aiming to grow with you
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

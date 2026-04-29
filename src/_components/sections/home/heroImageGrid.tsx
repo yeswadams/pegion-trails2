@@ -1,7 +1,8 @@
+"use client";
+
 import Image from "next/image";
 
 const HeroImageGrid = () => {
-  // Array of images - ensuring enough items for a tall enough track
   const images = [
     "/images/hero_img1.avif",
     "/images/hero_img1.jpg",
@@ -11,50 +12,71 @@ const HeroImageGrid = () => {
     "/images/hero_img5.jpg",
     "/images/hero_img6.jpg",
     "/images/hero_img7.jpg",
-
-    
   ];
 
-  const ScrollingColumn = ({
-    direction,
+  const ScrollingRow = ({
     speed,
-    containerClass = "",
   }: {
-    direction: "up" | "down";
     speed: string;
-    containerClass?: string;
   }) => (
-    /* The container handles the vertical stagger/misalignment */
-    <div className={`flex-1 h-full overflow-hidden ${containerClass} `}>
+    <div className="flex-1 h-full overflow-hidden">
       <div
-        className={`flex flex-col gap-4 ${
-          direction === "down" ? "animate-marquee-down" : "animate-marquee-up"
-        }`}
-        style={{ animationDuration: speed }}
+        className="flex flex-row gap-6 w-max animate-marquee-right hover:[animation-play-state:paused]"
+        style={{
+          animationDuration: speed,
+          transform: "perspective(1200px) rotateX(8deg)",
+        }}
       >
-        {/* Double the array for the seamless loop seam */}
-        {[...images, ...images].map((src, idx) => (
-          <div
-            key={idx}
-            className="relative aspect-3/4 overflow-hidden rounded-2xl border-2 border-white/5 shadow-xl"
-          >
-            <Image src={src} alt="" fill className="object-cover" />
-          </div>
-        ))}
+        {[...images, ...images].map((src, idx) => {
+          const rotation = (idx % images.length - images.length / 2) * 3;
+
+          return (
+            <div
+              key={idx}
+              className="relative w-[200px] h-[260px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-xl"
+              style={{
+                transform: `rotateY(${rotation}deg)`,
+              }}
+            >
+              <Image
+                src={src}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="200px"
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 
   return (
-    <div className="hidden md:flex gap-4 w-[45%] h-screen overflow-hidden px-4">
-      {/* Column 1: Starts lower (Misaligned Down) */}
-      <ScrollingColumn direction="down" speed="200s" containerClass="pt-20" />
+    <div className="hidden md:flex w-[45%] px-4">
+      <div className="relative w-full overflow-hidden">
+        {/* Fade edges */}
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black to-transparent z-10" />
 
-      {/* Column 2: Standard Start (Moving Up) */}
-      <ScrollingColumn direction="up" speed="130s" />
+        <ScrollingRow speed="60s" />
+      </div>
 
-      {/* Column 3: Starts even lower (Misaligned further) */}
-      <ScrollingColumn direction="down" speed="242s" containerClass="pt-40" />
+      {/* Animation styles */}
+      <style jsx>{`
+        @keyframes marquee-right {
+          0% {
+            transform: translateX(-50%) perspective(1200px) rotateX(8deg);
+          }
+          100% {
+            transform: translateX(0%) perspective(1200px) rotateX(8deg);
+          }
+        }
+
+        .animate-marquee-right {
+          animation: marquee-right linear infinite;
+        }
+      `}</style>
     </div>
   );
 };

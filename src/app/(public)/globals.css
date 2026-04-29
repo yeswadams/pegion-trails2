@@ -12,6 +12,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-instrument: "Instrument Serif", serif;
   --color-mega-bg: #d1e5ff;
   --color-mega-text: #09083b;
   --color-deep-blue: #09083b;
@@ -68,14 +69,22 @@ em {
 
 /* Hero Section images animation */
 
-@keyframes marquee-down {
-  0% { transform: translate3d(0, -50%, 0); }
-  100% { transform: translate3d(0, 0%, 0); }
+@keyframes marquee-right {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 @keyframes marquee-up {
-  0% { transform: translate3d(0, 0%, 0); }
-  100% { transform: translate3d(0, -50%, 0); }
+  0% {
+    transform: translate3d(0, 0%, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
 }
 
 .animate-marquee-down {
@@ -89,8 +98,12 @@ em {
 /* Services Section animation */
 
 @keyframes marquee-left-to-right {
-  0% { transform: translate3d(-50%, 0, 0); }
-  100% { transform: translate3d(0%, 0, 0); }
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
 }
 
 .animate-marquee-horizontal {
@@ -100,4 +113,17 @@ em {
 /* Pause on hover */
 .hover-pause:hover .animate-marquee-horizontal {
   animation-play-state: paused;
+}
+.scroll-reveal {
+  margin: 20px 0;
+}
+
+.scroll-reveal-text {
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.word {
+  display: inline-block;
 }

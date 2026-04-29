@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const IntroVideo = () => {
   return (
-    <section className="bg-[#FAF8F9] py-12 px-4 md:px-18">
+    <section className="bg-white py-12 px-4 md:px-18">
       <div className="max-w-full mx-auto grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-12">
         {/* Left Content */}
         <div className="flex flex-col gap-6 w-full">
@@ -14,7 +14,7 @@ const IntroVideo = () => {
             A New Era of Creative Marketing
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#09083B] leading-[1.1] mb-8">
-            The kind of creative partner <em>you've been asking for</em>
+            The kind of creative partner <em>you&apos;ve been asking for</em>
           </h1>
           <p className="text-2xl text-[#09083B]/70 leading-relaxed mb-8 max-w-[600px]">
             Pegion Trails is your dedicated, on-call creative team to expand

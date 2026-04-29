@@ -5,21 +5,21 @@ import Image from "next/image";
 
 const CreativeWorkSection = () => {
   const categories = [
-    { title: "Brand Identity", img: "/images/brand.jpg" },
-    { title: "AI Strategy Consulting", img: "/images/ai.jpg" },
-    { title: "eBook & Digital Reports", img: "/images/reports.jpg" },
-    { title: "Concept Creation", img: "/images/concept.jpg" },
-    { title: "Packaging & Merch", img: "/images/merch.jpg" },
+    { img: "/images/marketing-strategy.png" },
+    { img: "/images/brand-design.png" },
+    { img: "/images/product-design.png" },
+    { img: "/images/ai-consulting.png" },
+    { img: "/images/seo.png" },
   ];
 
   return (
     <section className="bg-[#F9F9F7] py-24 overflow-hidden">
       <div className="max-w-full mx-auto px-4 md:px-18 mb-16 text-center md:text-left">
-        <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#09083B]/60 mb-6">
-          Easy & Hassle-Free
+        <p className="text-[16px] uppercase tracking-[0.3em] font-bold text-[#09083B]/60 mb-6">
+          Our Top Services
         </p>
-        <h2 className="text-4xl md:text-6xl font-bold text-[#09083B] leading-tight">
-          Every type of creative work you'll <br />
+        <h2 className="text-4xl md:text-6xl font-normal text-[#09083B] leading-tight">
+          We offer creative services you&apos;ll <br />
           ever need, <em>and more</em>
         </h2>
       </div>
@@ -31,24 +31,15 @@ const CreativeWorkSection = () => {
           {[...categories, ...categories].map((item, idx) => (
             <div 
               key={idx} 
-              className="relative w-[200px] md:w-[350px] aspect-[3/4] flex-shrink-0 rounded-3xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500"
+              className="relative w-[360px] h-[500px] flex-shrink-0 rounded-lg overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500"
             >
               <Image
                 src={item.img}
-                alt={item.title}
+                alt="Our Service"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              {/* Overlay Gradient for Text Readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-              
-              <div className="absolute inset-0 p-10 flex flex-col justify-start">
-                <h3 className="text-3xl md:text-4xl font-medium text-white leading-tight">
-                  {/* Matching the specific font styling in the image */}
-                  <span className="serif-font italic block">{item.title.split(' ')[0]}</span>
-                  {item.title.split(' ').slice(1).join(' ')}
-                </h3>
-              </div>
+              {/* Overlay Gradient for Text Readability */}              
             </div>
           ))}
         </div>
