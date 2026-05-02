@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Linkedin, Twitter, Globe } from "lucide-react";
+import { Linkedin, Twitter, Globe, ArrowLeft } from "lucide-react";
 
 type TeamMember = {
   id: number;
@@ -64,11 +64,23 @@ const team: TeamMember[] = [
     credentials: "CMO",
     tags: ["PR", "MARKETING LEAD & PUBLIC RELATIONS"],
     image: "/team/juliana.jpg",
-    bio: "Juliana is well versed and specialized on marketing with a unique approach toward brand credibility.",
+    bio: "Juliana Omari is a corporate journalist recognized for her unique ability to lead brands through their entire digital evolution. Rooted in academic excellence with a degree in Journalism and Mass Communication from Tharaka University, she brings editorial precision and a researcher's depth to uncovering a brand’s authentic voice. Beyond narrative strategy and expert blog writing, Juliana seamlessly transitions into the visual and technical realms—crafting distinct graphic identities and anchoring them in the digital world through high-performance, SEO-optimized WordPress websites designed for maximum visibility and impact.",
     experience: 8,
     rating: 4.9,
-    skills: ["Brand Strategy", "Public Relations", "Content Marketing"],
-    socials: { linkedin: "https://www.linkedin.com/in/juliana-omari-666a742a4/", twitter: "#", website: "#" },
+    skills: [
+      "Corporate Journalism", 
+      "Brand Evolution", 
+      "Public Relations", 
+      "Editorial Strategy", 
+      "Visual Identity Design", 
+      "WordPress Development", 
+      "Strategic SEO"
+    ],
+    socials: { 
+      linkedin: "https://www.linkedin.com/in/juliana-omari-666a742a4/", 
+      twitter: "#", 
+      website: "#" 
+    },
   },
 ];
 
@@ -89,56 +101,56 @@ export default function TeamPage() {
     const m = selectedMember;
 
     return (
-      <main className="min-h-screen bg-white text-[#0d0b2e] pt-20 pb-24 px-8 md:px-16">
+      <main className="min-h-screen bg-white text-[#0d0b2e] pt-12 pb-16 md:pt-20 md:pb-24 px-5 md:px-16">
         <button
           onClick={() => setSelectedMember(null)}
-          className="mt-10 mb-12 text-sm font-medium hover:underline flex items-center gap-2"
+          className="mt-6 md:mt-10 mb-8 md:mb-12 text-sm font-medium hover:underline flex items-center gap-2 group"
         >
-          ← Back to Team
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform"/> Back to Team
         </button>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Image Column */}
           <div className="md:col-span-5">
             <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden shadow-lg">
-              <Image src={m.image} alt={m.name} fill className="object-cover" />
+              <Image src={m.image} alt={m.name} fill className="object-cover" priority />
             </div>
             
-            {/* Socials - Added Optional Chaining as a safety fallback */}
-            <div className="flex gap-4 mt-6">
-              <a href={m.socials?.linkedin || "#"} target= "_blank"  rel="noopener noreferrer" className="p-3 bg-black/5 rounded-full hover:bg-black hover:text-white transition-colors"><Linkedin size={18} /></a>
-              <a href={m.socials?.twitter || "#"} target= "_blank"  rel="noopener noreferrer" className="p-3 bg-black/5 rounded-full hover:bg-black hover:text-white transition-colors"><Twitter size={18} /></a>
-              <a href={m.socials?.website || "#"} target= "_blank"  rel="noopener noreferrer" className="p-3 bg-black/5 rounded-full hover:bg-black hover:text-white transition-colors"><Globe size={18} /></a>
+            {/* Socials */}
+            <div className="flex gap-4 mt-6 md:mt-8">
+              {m.socials?.linkedin && <a href={m.socials.linkedin} target= "_blank"  rel="noopener noreferrer" className="p-3 bg-black/5 rounded-full hover:bg-black hover:text-white transition-colors" title="LinkedIn"><Linkedin size={18} /></a>}
+              {m.socials?.twitter && <a href={m.socials.twitter} target= "_blank"  rel="noopener noreferrer" className="p-3 bg-black/5 rounded-full hover:bg-black hover:text-white transition-colors" title="Twitter"><Twitter size={18} /></a>}
+              {m.socials?.website && <a href={m.socials.website} target= "_blank"  rel="noopener noreferrer" className="p-3 bg-black/5 rounded-full hover:bg-black hover:text-white transition-colors" title="Website"><Globe size={18} /></a>}
             </div>
           </div>
 
           {/* Info Column */}
-          <div className="md:col-span-7 flex flex-col pt-4">
-            <div className="flex flex-wrap gap-2 mb-6">
+          <div className="md:col-span-7 flex flex-col pt-2 md:pt-4">
+            <div className="flex flex-wrap gap-2 mb-5 md:mb-6">
               {m.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] font-semibold text-black/50 border border-black/10 px-3 py-1 rounded"
+                  className="text-[10px] font-semibold text-black/50 border border-black/10 px-3 py-1.5 rounded uppercase"
                 >
                   {tag}
                 </span>
               ))}
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-medium tracking-tight mb-4">
+            <h1 className="text-3xl md:text-5xl font-medium tracking-tight mb-4">
               {m.name}
             </h1>
             
-            <p className="text-xl text-black/60 font-light mb-8">
+            <p className="text-lg md:text-xl text-black/60 font-light mb-6 md:mb-8">
               {m.role} <span className="mx-2 text-black/20">|</span> {m.credentials}
             </p>
 
-            <p className="text-lg leading-relaxed text-black/80 max-w-2xl mb-10">
+            <p className="text-base md:text-lg leading-relaxed text-black/80 max-w-2xl mb-8 md:mb-10">
               {m.bio}
             </p>
 
             {/* Skills Section */}
-            <div className="mb-10">
+            <div className="mb-8 md:mb-10">
               <h3 className="text-xs font-bold uppercase tracking-widest text-black/40 mb-4">Core Expertise</h3>
               <div className="flex flex-wrap gap-2">
                 {m.skills.map((skill) => (
@@ -149,14 +161,14 @@ export default function TeamPage() {
               </div>
             </div>
 
-            <div className="flex gap-12 pt-8 border-t border-black/5">
-              <div>
-                <div className="text-2xl font-medium">{m.experience}+</div>
-                <p className="text-xs uppercase tracking-wider text-black/40 mt-1">Years Experience</p>
+            <div className="flex flex-col sm:flex-row sm:gap-12 gap-8 pt-8 border-t border-black/5">
+              <div className="flex items-baseline gap-2">
+                <div className="text-4xl md:text-2xl font-medium">{m.experience}+</div>
+                <p className="text-xs uppercase tracking-wider text-black/40">Years Experience</p>
               </div>
-              <div>
-                <div className="text-2xl font-medium">{m.rating}</div>
-                <p className="text-xs uppercase tracking-wider text-black/40 mt-1">Client Rating</p>
+              <div className="flex items-baseline gap-2">
+                <div className="text-4xl md:text-2xl font-medium">{m.rating}</div>
+                <p className="text-xs uppercase tracking-wider text-black/40">Client Rating</p>
               </div>
             </div>
           </div>
@@ -165,24 +177,30 @@ export default function TeamPage() {
     );
   }
 
-  /* ================= CAROUSEL + CULTURE VIEW ================= */
+  /* ================= CAROUSEL + CULTURE VIEW (Optimized for Mobile) ================= */
   return (
     <main className="bg-white">
-      <section className="relative min-h-[100dvh] text-[#0d0b2e] overflow-hidden pt-32 pb-24">
-        <div className="flex w-full h-full">
-          <div className="w-1/2 pl-12 flex flex-col justify-center">
-            <h1 className="font-serif text-[clamp(4rem,8vw,7rem)] leading-[0.9] tracking-tighter">
-              MEET <br />
+      {/* Hero Carousel Section */}
+      <section className="relative min-h-screen text-[#0d0b2e] overflow-hidden pt-16 pb-12 md:pt-32 md:pb-24 px-5 md:px-0">
+        {/* Layout: Reverse column on mobile to put images first, standard flex on desktop */}
+        <div className="flex flex-col-reverse md:flex-row w-full h-full gap-12 md:gap-0">
+          
+          {/* Left Side: Content */}
+          <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start md:pl-16 text-center md:text-left">
+            <h1 className="font-serif text-[clamp(2.5rem,7vw,7rem)] leading-[0.9] tracking-tighter">
+              MEET <br className="hidden md:block" />
               <span className="italic text-[#C6DFFF]">OUR</span> TEAM
             </h1>
-            <div className="mt-12 space-y-2">
-              <h4 className="font-serif text-2xl md:text-4xl leading-tight text-[#09083B]">
-                Different Minds. Moving Together.
+            
+            <div className="mt-8 md:mt-12 space-y-2">
+              <h4 className="font-serif text-xl md:text-4xl leading-tight text-[#09083B]">
+                Different Minds. <br className="md:hidden" /> Moving Together.
               </h4>
             </div>
-            <div className="mt-10 max-w-[600px]">
-              <div className="w-12 h-[2px] bg-[#C6DFFF] mb-6" />
-              <p className="text-base leading-relaxed text-black/70 font-light">
+            
+            <div className="mt-8 md:mt-10 max-w-[600px]">
+              <div className="w-12 h-[2px] bg-[#C6DFFF] mb-6 mx-auto md:mx-0" />
+              <p className="text-sm md:text-base leading-relaxed text-black/70 font-light">
                 We build world-class digital experiences for ambitious brands.
                 Pegion Trails brings together diverse perspectives to shape
                 thoughtful, collaborative design. Every project is guided by
@@ -191,79 +209,94 @@ export default function TeamPage() {
             </div>
           </div>
 
-          <div className="w-1/2 flex items-center justify-center gap-12">
-            <div className="relative w-[550px] aspect-[3/4]">
+          {/* Right Side: Portrait Stack & Controls */}
+          <div className="w-full md:w-1/2 flex flex-col items-center justify-center gap-8 md:gap-12">
+            {/* The Stacked Carousel Container */}
+            {/* Aspect ratio is now responsive width w-[90vw] md:w-[500px] */}
+            <div className="relative w-[85vw] sm:w-[60vw] md:w-[500px] aspect-[3/4] flex items-center justify-center">
               {team.map((member, i) => {
                 const offset = i - index;
+                // Limit display to current and 3 next/prev
                 if (Math.abs(offset) > 3) return null;
+                
                 return (
                   <div
                     key={member.id}
                     onClick={() => offset === 0 && setSelectedMember(member)}
-                    className={`absolute top-0 left-0 w-full h-full transition-all duration-500 ease-out ${
-                      offset === 0 ? "cursor-pointer group" : ""
+                    className={`absolute top-0 w-full h-full transition-all duration-500 ease-out origin-bottom ${
+                      offset === 0 ? "cursor-pointer group" : "pointer-events-none"
                     }`}
                     style={{
+                      // Scale down and shift based on stack order
                       zIndex: 10 - Math.abs(offset),
                       transform: `
-                        translateX(${offset * -50}px)
-                        translateY(${Math.abs(offset) * 30}px)
-                        scale(${1 - Math.abs(offset) * 0.12})
+                        translateX(${offset * -40}px)
+                        translateY(${Math.abs(offset) * 20}px)
+                        scale(${1 - Math.abs(offset) * 0.1})
                       `,
                       opacity: 1 - Math.abs(offset) * 0.3,
-                      filter: `blur(${Math.abs(offset) * 2}px)`,
+                      filter: `blur(${Math.abs(offset) * 1.5}px)`,
                     }}
                   >
+                    {/* Hover state overlay */}
                     {offset === 0 && (
                       <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md backdrop-blur-[2px]">
-                        <span className="bg-white text-black px-8 py-3 rounded-full font-bold shadow-xl tracking-wide uppercase text-sm">
+                        <span className="bg-white text-black px-6 md:px-8 py-2 md:py-3 rounded-full font-bold shadow-xl tracking-wide uppercase text-xs md:sm">
                           View Profile
                         </span>
                       </div>
                     )}
-                    <Image src={member.image} alt={member.name} fill className="object-cover rounded-md shadow-2xl" />
+                    <Image src={member.image} alt={member.name} fill className="object-cover rounded-md shadow-2xl" priority={i === 0}/>
                   </div>
                 );
               })}
             </div>
 
-            <div className="text-left max-w-[300px]">
-              <h2 className="font-serif text-4xl">{current.name}</h2>
-              <p className="text-xl text-black/60 mb-6">{current.credentials}</p>
-              <div className="flex flex-wrap gap-2 mb-8">
+            {/* Selected Member Info & Controls */}
+            <div className="text-center md:text-left max-w-[300px] w-full px-5 md:px-0">
+              <h2 className="font-serif text-3xl md:text-4xl">{current.name}</h2>
+              <p className="text-lg md:text-xl text-black/60 mb-5 md:mb-6">{current.credentials}</p>
+              
+              <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6 md:mb-8">
                 {current.tags.map((tag) => (
-                  <span key={tag} className="text-[10px] border border-black/20 px-4 py-1 rounded-full uppercase">
+                  <span key={tag} className="text-[10px] border border-black/20 px-3 py-1.5 rounded-full uppercase">
                     {tag}
                   </span>
                 ))}
               </div>
-              <div className="flex gap-4">
-                <button onClick={prev} className="w-12 h-12 border rounded-full hover:bg-black hover:text-white transition">←</button>
-                <button onClick={next} className="w-12 h-12 border rounded-full hover:bg-black hover:text-white transition">→</button>
+              
+              <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-4">
+                <div className="flex gap-4">
+                  <button onClick={prev} className="w-12 h-12 border border-black/10 rounded-full hover:bg-black hover:text-white transition flex items-center justify-center">←</button>
+                  <button onClick={next} className="w-12 h-12 border border-black/10 rounded-full hover:bg-black hover:text-white transition flex items-center justify-center">→</button>
+                </div>
+                <div className="text-sm text-black/50 font-light">
+                  <span className="font-medium text-black">{index + 1}</span> / {team.length}
+                </div>
               </div>
-              <div className="mt-8 text-sm text-black/50">{index + 1} / {team.length}</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* New Culture Section */}
-      <section className="bg-[#C6DFFF] px-12 py-32 text-[#0d0b2e]">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="font-serif text-4xl md:text-5xl leading-tight font-medium">
+      {/* New Culture Section (Optimized for Mobile) */}
+      <section className="bg-[#C6DFFF] pt-24 pb-20 md:pt-32 md:pb-32 px-5 md:px-16 text-[#0d0b2e]">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
+          <div className="text-center md:text-left">
+            <h2 className="font-serif text-3xl md:text-5xl leading-tight font-medium">
               HOW WE THINK.<br />
               HOW WE WORK.
             </h2>
-            <p className="mt-10 text-lg opacity-80 leading-relaxed max-w-md">
+            <p className="mt-8 md:mt-10 text-base md:text-lg opacity-80 leading-relaxed max-w-md mx-auto md:mx-0 font-light">
               We value ideas over hierarchy, progress over perfection, and
               collaboration over competition. Our studio culture encourages
               experimentation, honest feedback, and continuous learning.
             </p>
           </div>
-          <div className="flex flex-wrap gap-4">
+          
+          <div className="flex flex-wrap gap-3 md:gap-4 justify-center md:justify-start pt-2">
             {["CURIOSITY", "COLLABORATION", "CRAFT", "CLARITY", "GROWTH"].map((tag) => (
-              <div key={tag} className="border-2 border-[#0d0b2e] bg-white/30 backdrop-blur-sm px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0d0b2e] hover:text-white transition-all duration-300 cursor-default">
+              <div key={tag} className="border-2 border-[#0d0b2e] bg-white/30 backdrop-blur-sm px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-sm md:text-lg hover:bg-[#0d0b2e] hover:text-white transition-all duration-300 cursor-default tracking-wide">
                 {tag}
               </div>
             ))}

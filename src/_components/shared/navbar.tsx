@@ -168,6 +168,7 @@ const Navbar = () => {
   const isPricingPage = pathname?.includes("/pricing");
   const isServicesPage = pathname?.includes("/services");
   const isTeamPage = pathname?.includes("/why-us") || pathname?.includes("/creative-talent");
+  const isOurWorkPage = pathname?.includes("/work");
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -215,7 +216,7 @@ const Navbar = () => {
   // Dynamic classes based on state
   const navbarClasses = `fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${isScrolled || hoveredNavItem || isMobileMenuOpen
     ? "bg-[#09083B] shadow-scroll py-3"
-    : isBlogPage || isPricingPage || isServicesPage || isTeamPage
+    : isBlogPage || isPricingPage || isServicesPage || isTeamPage || isOurWorkPage
       ? "bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 shadow-sm"
       : "bg-transparent py-5"
     }`;
@@ -223,7 +224,7 @@ const Navbar = () => {
   const linkColorClass =
     isScrolled || hoveredNavItem || isMobileMenuOpen
       ? "text-white"
-      : isBlogPage || isPricingPage || isServicesPage || isTeamPage
+      : isBlogPage || isPricingPage || isServicesPage || isTeamPage || isOurWorkPage
         ? "text-[#09083B]"
         : "text-white";
 
