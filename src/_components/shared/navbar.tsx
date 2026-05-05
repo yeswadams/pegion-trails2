@@ -674,7 +674,7 @@ const MobileWhyUsContent = ({ closeMenu }: { closeMenu: () => void }) => {
           title: "Our technology",
           sub: "The tech powering edge",
           img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600",
-          href: "/why-us/technology",
+          href: "/technology",
         },
       ].map((item, idx) => (
         <Link
@@ -817,7 +817,7 @@ const WhyUsMegaMenu = () => {
       </Link>
 
       {/* Our technology */}
-      <Link href="/why-us/technology" className="group block cursor-pointer">
+      <Link href="/technology" className="group block cursor-pointer">
         <div className="aspect-16/10 rounded-lg overflow-hidden mb-5 shadow-sm group-hover:shadow-md transition-all duration-300">
           <img
             src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800"

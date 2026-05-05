@@ -86,7 +86,7 @@ export default function TechnologyPage() {
               {category.items.map((item) => (
                 <Link
                   key={item.slug}
-                  href={`/why-us/technology/${item.slug}`}
+                  href={`/technology/${item.slug}`}
                   className="group border border-black/10 p-6 rounded-md hover:border-black transition"
                 >
                   <h3 className="text-lg font-medium group-hover:underline">
